@@ -34,4 +34,8 @@ public class Staff {
         this.storeId = storeId;
 //        this.store = store;
     }
+
+    public void changeName(final String name) {
+        this.name = name;
+    }
 }

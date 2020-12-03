@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.example.querydsl.staff.entity.QStaff.staff;
@@ -85,4 +86,27 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
                 .where(store.name.eq(name))
                 .fetch();
     }
+
+    @Transactional
+    public Long deleteQuery(Long id) {
+//        return jpaQueryFactory.delete(store)
+//                .where(store.id.eq(id))
+//                .execute();
+
+        return delete(store)                // QuerydslRepositorySupport
+                .where(store.id.eq(id))
+                .execute();
+    }
+
+    @Transactional
+    public Long updateQuery(Long id, String address) {
+//        return jpaQueryFactory.update(store)
+//                .where(store.id.eq(id))
+//                .execute();
+        return update(store)                // QuerydslRepositorySupport
+                .set(store.address, address)
+                .where(store.id.eq(id))
+                .execute();
+    }
+
 }

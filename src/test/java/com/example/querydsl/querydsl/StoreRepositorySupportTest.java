@@ -177,4 +177,29 @@ public class StoreRepositorySupportTest {
         //then
         assertThat(store.getName()).isEqualTo("TEST_" + name);
     }
+
+    @Test
+    void updateQueryTest() {
+        //given
+        final Long storeId = 2L;
+        final String address = "빌딩";
+
+        //when
+        Long aLong = storeRepositorySupport.updateQuery(storeId, address);
+
+        //then
+        assertThat(aLong).isNotNull();
+    }
+
+    @Test
+    void deleteQueryTest() {
+        //given
+        final Long storeId = 2L;
+
+        //when
+        Long aLong = storeRepositorySupport.deleteQuery(1l);
+
+        //then
+        assertThat(aLong).isNotNull();
+    }
 }
