@@ -14,7 +14,7 @@ public class P6spyLogMessageFormatConfiguration {
         P6SpyOptions.getActiveInstance().setLogMessageFormat(P6spySqlFormatConfiguration.class.getName());      // pretty
 
         // exclude sql pattern
-        P6LogOptions.getActiveInstance().setFilter(true);
-        P6LogOptions.getActiveInstance().setExclude("store");
+//        P6LogOptions.getActiveInstance().setFilter(true);
+//        P6LogOptions.getActiveInstance().setExclude("store");
     }
 }

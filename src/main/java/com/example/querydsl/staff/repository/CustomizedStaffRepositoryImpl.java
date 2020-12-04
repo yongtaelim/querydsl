@@ -1,7 +1,6 @@
 package com.example.querydsl.staff.repository;
 
 import com.example.querydsl.staff.entity.Staff;
-import com.example.querydsl.staff.repository.StaffRepositoryCustom;
 import com.example.querydsl.staff.vo.StaffVo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,7 +11,7 @@ import java.util.List;
 import static com.example.querydsl.staff.entity.QStaff.staff;
 
 @RequiredArgsConstructor
-public class StaffRepositoryImpl implements StaffRepositoryCustom {
+public class CustomizedStaffRepositoryImpl implements CustomizedStaffRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
 

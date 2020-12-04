@@ -5,7 +5,7 @@ import com.example.querydsl.staff.vo.StaffVo;
 
 import java.util.List;
 
-public interface StaffRepositoryCustom {
+public interface CustomizedStaffRepository {
     List<Staff> searchAll();
     StaffVo search(Long id);
     Staff findStaffById(Long id);
