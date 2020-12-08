@@ -12,6 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -176,6 +180,25 @@ public class StoreRepositorySupportTest {
 
         //then
         assertThat(store.getName()).isEqualTo("TEST_" + name);
+    }
+
+    @Test
+    void querydsl_페이징처리() {
+        //given
+        final String name = "용태스토어";
+
+        Sort.Order order = Sort.Order.desc("id");
+        Sort sort = Sort.by(order);
+
+        Pageable pageable = PageRequest.of(0, 10, sort);
+
+        //when
+        PageImpl<StoreVo> result = storeRepositorySupport.findStoresByNamePaging(name, pageable);
+
+        //then
+        assertThat(result.getNumber()).isEqualTo(0);
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getContent().size()).isEqualTo(1);
     }
 
     @Test

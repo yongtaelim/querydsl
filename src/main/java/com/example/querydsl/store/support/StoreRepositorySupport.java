@@ -6,10 +6,17 @@ import com.example.querydsl.store.entity.Store;
 import com.example.querydsl.store.vo.StoreVo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilderFactory;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -19,15 +26,18 @@ import static com.example.querydsl.store.entity.QStore.store;
 @Repository
 public class StoreRepositorySupport extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
 
     /**
      * Creates a new {@link QuerydslRepositorySupport} instance for the given domain type.
      *
      * @param domainClass must not be {@literal null}.
+     * @param entityManager
      */
-    public StoreRepositorySupport(JPAQueryFactory jpaQueryFactory) {
+    public StoreRepositorySupport(JPAQueryFactory jpaQueryFactory, EntityManager entityManager) {
         super(Store.class);
         this.jpaQueryFactory = jpaQueryFactory;
+        this.entityManager = entityManager;
     }
 
     public StoreVo findByName(String name) {
@@ -109,4 +119,18 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
                 .execute();
     }
 
+    public PageImpl<StoreVo> findStoresByNamePaging(String name, Pageable pageable) {
+        JPQLQuery<StoreVo> query = jpaQueryFactory
+                .select(Projections.fields(StoreVo.class,
+                        store.id
+                        , store.name
+                        , store.address
+                ))
+                .from(store)
+                .where(store.name.eq(name));
+
+        long totalCount = query.fetchCount();
+        List<StoreVo> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
 }

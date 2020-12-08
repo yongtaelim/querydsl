@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -61,5 +65,24 @@ public class StaffRepositoryTest {
         staff.changeName(name);
 
         //then
+    }
+
+    @Test
+    void querydsl_페이징처리() {
+        //given
+        final String name = "임임용태";
+
+        Sort.Order order = Sort.Order.desc("id");
+        Sort sort = Sort.by(order);
+
+        Pageable pageable = PageRequest.of(0, 10, sort);
+
+        //when
+        PageImpl<StaffVo> staffsByNamePaging = staffRepository.findStaffsByNamePaging(name, pageable);
+
+        //then
+        assertThat(staffsByNamePaging.getNumber()).isEqualTo(0);
+        assertThat(staffsByNamePaging.getTotalPages()).isEqualTo(1);
+        assertThat(staffsByNamePaging.getContent().size()).isEqualTo(1);
     }
 }
