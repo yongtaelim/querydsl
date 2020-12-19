@@ -1,22 +1,25 @@
 package com.example.querydsl.staff.repository;
 
 import com.example.querydsl.staff.entity.Staff;
+import com.example.querydsl.staff.vo.StaffEtcVo;
 import com.example.querydsl.staff.vo.StaffVo;
+import com.example.querydsl.store.entity.QStore;
 import com.example.querydsl.util.PagingUtil;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.querydsl.staff.entity.QStaff.staff;
+import static com.example.querydsl.store.entity.QStore.*;
 
 @RequiredArgsConstructor
-public class CustomizedStaffRepositoryImpl implements CustomizedStaffRepository {
+public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
     private final PagingUtil pagingUtil;
 
@@ -59,5 +62,19 @@ public class CustomizedStaffRepositoryImpl implements CustomizedStaffRepository 
                 .where(staff.name.eq(name));
 
         return pagingUtil.getPageImpl(pageable, query, Staff.class);
+    }
+
+    @Override
+    public StaffEtcVo findStaffAndEtcOption(String name) {
+        return jpaQueryFactory
+                .select(Projections.fields(StaffEtcVo.class,
+                        staff,
+                        store.address
+                        ))
+                .from(staff)
+                    .join(store)
+                        .on(store.id.eq(staff.storeId))
+                .where(staff.name.eq(name))
+                .fetchFirst();
     }
 }

@@ -68,11 +68,28 @@ public class StaffRepositoryTest {
     }
 
     @Test
+    void 저장_테스트() {
+        //given
+        String name = "sssssss";
+        Staff staff = Staff.builder()
+                .name(name)
+                .build();
+
+
+        //when
+        staffRepository.save(staff);
+
+
+        //then
+        assertThat(staff.getName()).isEqualTo(name);
+    }
+
+    @Test
     void querydsl_페이징처리() {
         //given
         final String name = "임임용태";
 
-        Sort.Order order = Sort.Order.desc("id");
+        Sort.Order order = Sort.Order.desc("lastName");
         Sort sort = Sort.by(order);
 
         Pageable pageable = PageRequest.of(0, 10, sort);

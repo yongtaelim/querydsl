@@ -18,6 +18,7 @@ public class Staff {
 
     private String name;
     private Integer age;
+    private String lastName;
 
     @Column(name = "store_id")
     private Long storeId;
