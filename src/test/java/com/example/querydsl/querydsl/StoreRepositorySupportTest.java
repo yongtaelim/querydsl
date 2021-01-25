@@ -127,14 +127,12 @@ public class StoreRepositorySupportTest {
                 .id(staffId1)
                 .name(staffName1)
                 .age(age1)
-                .storeId(id)
                 .build();
 
         Staff staff2 = Staff.builder()
                 .id(staffId2)
                 .name(staffName2)
                 .age(age2)
-                .storeId(id)
                 .build();
 
         staffRepository.saveAll(Arrays.asList(staff1, staff2));

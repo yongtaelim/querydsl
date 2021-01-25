@@ -3,18 +3,24 @@ package com.example.querydsl.querydsl;
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.repository.StaffRepository;
 import com.example.querydsl.staff.vo.StaffVo;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ActiveProfiles("local")
+@ActiveProfiles("h2")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class StaffRepositoryTest {
@@ -95,5 +101,53 @@ public class StaffRepositoryTest {
         assertThat(staffsByNamePaging.getNumber()).isEqualTo(0);
         assertThat(staffsByNamePaging.getTotalPages()).isEqualTo(1);
         assertThat(staffsByNamePaging.getContent().size()).isEqualTo(1);
+    }
+
+    @Test
+    void dynamic_query_test() {
+        //given
+        final String name = "용태";
+
+        //when
+        Staff staff = staffRepository.dynamicQuery(name);
+
+        //then
+        assertThat(staff).isNotNull();
+    }
+
+    @Test
+    void querydsl_exist_test() {
+        //given
+        final String name = "";
+
+        //when
+        Boolean exist = staffRepository.findExist(name);
+
+        //then
+        assertThat(exist).isFalse();
+    }
+
+    @Test
+    void querydsl_exist_우회_test() {
+        //given
+        final String name = "";
+
+        //when
+        Boolean exist = staffRepository.findLimitOneInsteadOfExist(name);
+
+        //then
+        assertThat(exist).isFalse();
+    }
+
+    @Test
+    void querydsl_간단한_exists() {
+        //given
+        final String name = "";
+
+        //when
+        boolean exists = staffRepository.existsByName(name);
+
+        //then
+        assertThat(exists).isFalse();
     }
 }

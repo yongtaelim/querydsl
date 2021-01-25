@@ -1,19 +1,29 @@
 package com.example.querydsl.store.entity;
 
 
+import com.example.querydsl.staff.entity.Staff;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
-@Getter
 @Entity
+@Getter
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store {
 
@@ -24,10 +34,14 @@ public class Store {
     private String name;
     private String address;
 
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Staff> staffs;
+
     @Builder
-    public Store(Long id, String name, String address) {
+    public Store(Long id, String name, String address, List<Staff> staffs) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.staffs = staffs;
     }
 }

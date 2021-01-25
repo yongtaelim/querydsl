@@ -16,4 +16,10 @@ public interface StaffQueryRepository {
     PageImpl<StaffVo> findStaffsByNamePaging(String name, Pageable pageable);
 
     StaffEtcVo findStaffAndEtcOption(String id);
+
+    Staff dynamicQuery(String name);
+
+    Boolean findExist(String name);
+
+    Boolean findLimitOneInsteadOfExist(String name);
 }
