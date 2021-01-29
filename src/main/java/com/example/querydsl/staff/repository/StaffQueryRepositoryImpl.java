@@ -20,20 +20,19 @@ import static com.example.querydsl.store.entity.QStore.store;
 
 @RequiredArgsConstructor
 public class StaffQueryRepositoryImpl implements StaffQueryRepository {
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
-
 
     @Override
     public List<Staff> searchAll() {
-        return jpaQueryFactory
+        return queryFactory
                 .selectFrom(staff)
                 .fetch();
     }
 
     @Override
     public StaffVo search(Long id) {
-        return jpaQueryFactory
+        return queryFactory
                 .select(Projections.fields(StaffVo.class,
                     staff.id,
                     staff.name
@@ -45,14 +44,14 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
 
     @Override
     public Staff findStaffById(Long id) {
-        return jpaQueryFactory
+        return queryFactory
                 .selectFrom(staff)
                 .where(staff.id.eq(id))
                 .fetchOne();
     }
 
     public PageImpl<StaffVo> findStaffsByNamePaging(String name, Pageable pageable) {
-        JPQLQuery<StaffVo> query = jpaQueryFactory
+        JPQLQuery<StaffVo> query = queryFactory
                 .select(Projections.fields(StaffVo.class,
                         staff.id
                         , staff.age
@@ -66,44 +65,43 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
 
     @Override
     public StaffEtcVo findStaffAndEtcOption(String name) {
-        return jpaQueryFactory
+        return queryFactory
                 .select(Projections.fields(StaffEtcVo.class,
                         staff,
                         store.address
                         ))
                 .from(staff)
-                    .join(store)
-                        .on(store.id.eq(staff.storeId))
+                    .join(store.staffs)
                 .where(staff.name.eq(name))
                 .fetchFirst();
     }
 
     @Override
-    public Staff dynamicQuery(String name) {
-        return jpaQueryFactory
-                .selectFrom(staff)
-                .where(eqName(name))
-                .fetchOne();
-    }
+public Staff dynamicQuery(String name) {
+    return queryFactory
+            .selectFrom(staff)
+            .where(eqName(name))
+            .fetchOne();
+}
 
     @Override
-    public Boolean findExist(String name) {
-        BooleanExpression exists = jpaQueryFactory
-                .selectOne()
-                .from(staff)
-                .where(staff.name.eq(name))
-                .fetchAll()
-                .exists();
+public Boolean findExist(String name) {
+    BooleanExpression exists = queryFactory
+            .selectOne()
+            .from(staff)
+            .where(staff.name.eq(name))
+            .fetchAll()
+            .exists();
 
-        return jpaQueryFactory
-                .select(exists)
-                .from(staff)
-                .fetchOne();
-    }
+    return queryFactory
+            .select(exists)
+            .from(staff)
+            .fetchOne();
+}
 
     @Override
     public Boolean findLimitOneInsteadOfExist(String name) {
-        Integer fetchFirst = jpaQueryFactory
+        Integer fetchFirst = queryFactory
                 .selectOne()
                 .from(staff)
                 .where(staff.name.eq(name))

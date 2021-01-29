@@ -6,13 +6,10 @@ import com.example.querydsl.store.entity.Store;
 import com.example.querydsl.store.vo.StoreVo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.example.querydsl.staff.entity.QStaff.staff;
 import static com.example.querydsl.store.entity.QStore.store;
 
 @Repository
@@ -84,17 +80,17 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
      * @return
      */
     public List<StaffVo> findStaffsByName(String name) {
-        return jpaQueryFactory
-                .select(Projections.fields(StaffVo.class,
-                        staff.id
-                        , staff.age
-                        , staff.name
-                ))
-                .from(store)
-                .join(staff)
-                    .on(store.id.eq(staff.storeId))
-                .where(store.name.eq(name))
-                .fetch();
+//        return jpaQueryFactory
+//                .select(Projections.fields(StaffVo.class,
+//                        staff.id
+//                        , staff.age
+//                        , staff.name
+//                ))
+//                .from(store)
+//                .join(staff.store)
+//                .where(store.name.eq(name))
+//                .fetch();
+        return null;
     }
 
     @Transactional

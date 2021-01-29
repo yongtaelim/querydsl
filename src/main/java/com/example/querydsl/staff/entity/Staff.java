@@ -1,5 +1,6 @@
 package com.example.querydsl.staff.entity;
 
+import com.example.querydsl.bag.entity.Bag;
 import com.example.querydsl.store.entity.Store;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,12 +30,16 @@ public class Staff {
     @JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_staff_store_id"))
     private Store store;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Bag bag;
+
     @Builder
-    public Staff(Long id, String name, Integer age, Store store) {
+    public Staff(Long id, String name, Integer age, Store store, Bag bag) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.store = store;
+        this.bag = bag;
     }
 
     public void changeName(final String name) {

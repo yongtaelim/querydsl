@@ -1,5 +1,6 @@
 package com.example.querydsl.querydsl;
 
+import com.example.querydsl.basic.BasicTest;
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.repository.StaffRepository;
 import com.example.querydsl.staff.vo.StaffVo;
@@ -20,10 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ActiveProfiles("h2")
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class StaffRepositoryTest {
+public class StaffRepositoryTest extends BasicTest {
 
     @Autowired
     private StaffRepository staffRepository;
