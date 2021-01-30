@@ -1,12 +1,11 @@
 package com.example.querydsl.bag.repository;
 
 import com.example.querydsl.bag.entity.Bag;
-import com.example.querydsl.staff.entity.QStaff;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import static com.example.querydsl.bag.entity.QBag.bag;
-import static com.example.querydsl.staff.entity.QStaff.*;
+import static com.example.querydsl.staff.entity.QStaff.staff;
 
 @RequiredArgsConstructor
 public class BagQueryRepositoryImpl implements BagQueryRepository {
