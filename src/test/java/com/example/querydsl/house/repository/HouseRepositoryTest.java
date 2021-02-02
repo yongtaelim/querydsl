@@ -35,7 +35,7 @@ class HouseRepositoryTest extends BasicTest {
     }
 
     @Test
-    @DisplayName("file sort 미발생, order by null 처리")
+    @DisplayName("file sort 미발생, order by null 처리 ")
     void findByHouseGroupByName_Not_file_sort_test() {
         //when
         List<House> houses = houseRepository.findByHouseGroupByNameNotFileSort();
