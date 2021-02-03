@@ -22,4 +22,6 @@ public interface StaffQueryRepository {
     Boolean findExist(String name);
 
     Boolean findLimitOneInsteadOfExist(String name);
+
+    List<Staff> findByCoveringIndex(String name);
 }

@@ -4,6 +4,7 @@ import com.example.querydsl.house.entity.House;
 import com.example.querydsl.order.OrderByNull;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,5 +38,15 @@ public class HouseQueryRepositoryImpl implements HouseQueryRepository {
                 .groupBy(house.name)
                 .orderBy(OrderByNull.DEFAULT)
                 .fetch();
+    }
+
+    @Override
+    @Transactional
+    public Long updateAddressByName(String name) {
+        return queryFactory
+                .update(house)
+                .set(house.address, "대박 중심")
+                .where(house.name.eq(name))
+                .execute();
     }
 }

@@ -10,4 +10,6 @@ public interface HouseQueryRepository {
     List<House> findByHouseGroupByName();
 
     List<House> findByHouseGroupByNameNotFileSort();
+
+    Long updateAddressByName(String name);
 }

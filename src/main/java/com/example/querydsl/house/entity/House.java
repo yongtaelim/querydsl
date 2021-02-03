@@ -28,15 +28,16 @@ public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    private String address;
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "house")
     private List<Staff> staffs = new ArrayList<>();
 
     @Builder
-    public House(Long id, String name, List<Staff> staffs) {
+    public House(Long id, String address, String name, List<Staff> staffs) {
         this.id = id;
+        this.address = address;
         this.name = name;
         if (staffs != null) {
             this.staffs = staffs;
@@ -46,5 +47,13 @@ public class House {
     public void addStaff(Staff staff) {
         this.staffs.add(staff);
         staff.changeHouse(this);
+    }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changeAddress(String address) {
+        this.address = address;
     }
 }

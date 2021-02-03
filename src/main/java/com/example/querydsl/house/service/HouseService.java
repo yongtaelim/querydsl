@@ -29,4 +29,13 @@ public class HouseService {
                 .map(house -> house.getStaffs().get(0).getName())
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void badUpdate() {
+        List<House> houses = houseRepository.findAll();
+
+        for (House house : houses) {
+            house.changeAddress("강남구 완전 중심");
+        }
+    }
 }

@@ -80,6 +80,43 @@ class HouseServiceTest extends BasicTest {
         assertThat(allEntityGrapeWithStaff).hasSize(20);
     }
 
+    @Test
+    @DisplayName("무분별한 DirtyChecking")
+    void badUpdate() {
+        //given
+        setHouseTestData();
+
+        //when
+        houseService.badUpdate();
+    }
+
+    @Test
+    @DisplayName("일괄 update")
+    void updateAll() {
+        //given
+        final String name = "강남";
+        setStaffTestData();
+
+
+        //when
+        Long count = houseRepository.updateAddressByName(name);
+
+        //then
+        assertThat(count).isEqualTo(0);
+    }
+
+    private void setHouseTestData() {
+        List<House> houses = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            House house = House.builder()
+                    .name("강남아파트" + i)
+                    .build();
+            houses.add(house);
+        }
+        houseRepository.saveAll(houses);
+    }
+
     private void setStaffTestData() {
         List<House> houses = new ArrayList<>();
 

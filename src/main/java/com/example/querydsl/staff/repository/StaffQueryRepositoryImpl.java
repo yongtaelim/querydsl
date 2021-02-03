@@ -13,8 +13,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.querydsl.house.entity.QHouse.house;
 import static com.example.querydsl.staff.entity.QStaff.staff;
 import static com.example.querydsl.store.entity.QStore.store;
 
@@ -116,5 +118,24 @@ public Boolean findExist(String name) {
         }
 
         return staff.name.eq(name);
+    }
+
+    @Override
+    public List<Staff> findByCoveringIndex(String name) {
+        List<Long> houseIds = queryFactory
+                .select(house.id)
+                .from(house)
+                .where(house.name.eq(name))
+                .fetch();
+
+        if (houseIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return queryFactory
+                .selectFrom(staff)
+                .join(staff.house, house)
+                .where(house.id.in(houseIds))
+                .fetch();
     }
 }
