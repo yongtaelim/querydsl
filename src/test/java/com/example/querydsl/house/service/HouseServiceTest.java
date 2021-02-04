@@ -144,13 +144,13 @@ class HouseServiceTest extends BasicTest {
 
             house.addStaff(
                     Staff.builder()
-                            .name("임용태"+ i)
+                            .name("임용태" + i)
                             .build()
             );
 
             house.addStaff(
                     Staff.builder()
-                            .name("임용태님"+ i)
+                            .name("임용태님" + i)
                             .build()
             );
 
