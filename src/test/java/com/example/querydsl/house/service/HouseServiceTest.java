@@ -97,7 +97,6 @@ class HouseServiceTest extends BasicTest {
         final String name = "강남";
         setStaffTestData();
 
-
         //when
         Long count = houseRepository.updateAddressByName(name);
 
