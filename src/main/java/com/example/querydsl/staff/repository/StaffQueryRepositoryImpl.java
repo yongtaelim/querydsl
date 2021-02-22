@@ -79,27 +79,28 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     }
 
     @Override
-public Staff dynamicQuery(String name) {
-    return queryFactory
-            .selectFrom(staff)
-            .where(eqName(name))
-            .fetchOne();
-}
+    public Staff dynamicQuery(String name) {
+        return queryFactory
+                .selectFrom(staff)
+                    .join(store).on(eqName(name))
+                .where(eqName(name))
+                .fetchOne();
+    }
 
     @Override
-public Boolean findExist(String name) {
-    BooleanExpression exists = queryFactory
-            .selectOne()
-            .from(staff)
-            .where(staff.name.eq(name))
-            .fetchAll()
-            .exists();
+    public Boolean findExist(String name) {
+        BooleanExpression exists = queryFactory
+                .selectOne()
+                .from(staff)
+                .where(staff.name.eq(name))
+                .fetchAll()
+                .exists();
 
-    return queryFactory
-            .select(exists)
-            .from(staff)
-            .fetchOne();
-}
+        return queryFactory
+                .select(exists)
+                .from(staff)
+                .fetchOne();
+    }
 
     @Override
     public Boolean findLimitOneInsteadOfExist(String name) {
