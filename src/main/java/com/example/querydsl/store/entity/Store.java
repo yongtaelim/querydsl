@@ -33,15 +33,17 @@ public class Store {
 //    @ColumnTransformer(read = "CreatePrefix(account_number)", write = "CreatePrefix(?)")
     private String name;
     private String address;
+    private Integer age;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Staff> staffs;
 
     @Builder
-    public Store(Long id, String name, String address, List<Staff> staffs) {
+    public Store(Long id, String name, String address, Integer age, List<Staff> staffs) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.age = age;
         this.staffs = staffs;
     }
 }
