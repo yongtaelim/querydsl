@@ -3,28 +3,61 @@ package com.example.querydsl.querydsl;
 import com.example.querydsl.basic.BasicTest;
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.repository.StaffRepository;
+import com.example.querydsl.staff.vo.StaffEtcVo;
+import com.example.querydsl.staff.vo.StaffInfoVo;
 import com.example.querydsl.staff.vo.StaffVo;
+import com.example.querydsl.store.entity.Store;
+import com.example.querydsl.store.repository.StoreRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.TestConstructor;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class StaffRepositoryTest extends BasicTest {
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class StaffRepositoryTest extends BasicTest {
 
-    @Autowired
-    private StaffRepository staffRepository;
+    private final StoreRepository storeRepository;
+    private final StaffRepository staffRepository;
+
+    public StaffRepositoryTest(StoreRepository storeRepository, StaffRepository staffRepository) {
+        this.storeRepository = storeRepository;
+        this.staffRepository = staffRepository;
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        List<Staff> staffs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            staffs.add(
+                Staff.builder()
+                        .name("yong" + i)
+                        .age(i)
+                        .lastName("lim" + i)
+                        .build()
+            );
+        }
+
+        Store store = Store.builder()
+                .address("강남역 근처")
+                .name("대박사업장")
+                .staffs(staffs)
+                .build();
+
+        storeRepository.save(store);
+    }
 
     @Test
     void searchAll() {
@@ -147,5 +180,54 @@ public class StaffRepositoryTest extends BasicTest {
 
         //then
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    @DisplayName("Querydsl-JPA 사용 시 Entity 필드 전체 조회")
+    void findStaffAndStoreAllData() {
+        //given
+        final String name = "staffN";
+        Staff staff = Staff.builder()
+                .name(name)
+                .age(32)
+                .build();
+        staffRepository.save(staff);
+
+        //when
+        StaffEtcVo staffEtcVo = staffRepository.findStaffAndEtcOption(name);
+
+
+        //then
+        assertThat(staffEtcVo.getStaff()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Querydsl-JPA covering index 적용")
+    void findByCoveringIndex() {
+        //given
+        final String name = "강남집";
+
+        //when
+        List<Staff> staffs = staffRepository.findByCoveringIndex(name);
+
+        //then
+        assertThat(staffs).isNotNull();
+    }
+
+    @Test
+    @DisplayName("querydsl paging, order 테스트")
+    void findAllDynamicOrder_test() {
+        //given
+        Pageable pageable = PageRequest.of(0, 10);
+
+        //when
+        PageImpl<StaffInfoVo> storeInfoVo = staffRepository.findAllDynamicOrder(pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(storeInfoVo.getTotalPages()).isEqualTo(0),
+                () -> assertThat(storeInfoVo.getNumber()).isEqualTo(0),
+                () -> assertThat(storeInfoVo.getContent()).hasSize(10)
+        );
     }
 }

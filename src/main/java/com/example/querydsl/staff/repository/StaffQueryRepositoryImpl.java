@@ -2,11 +2,13 @@ package com.example.querydsl.staff.repository;
 
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.vo.StaffEtcVo;
+import com.example.querydsl.staff.vo.StaffInfoVo;
 import com.example.querydsl.staff.vo.StaffVo;
 import com.example.querydsl.util.PagingUtil;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -138,5 +140,20 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
                 .join(staff.house, house)
                 .where(house.id.in(houseIds))
                 .fetch();
+    }
+
+    @Override
+    public PageImpl<StaffInfoVo> findAllDynamicOrder(Pageable pageable) {
+        JPAQuery<StaffInfoVo> query = queryFactory
+                .select(Projections.fields(StaffInfoVo.class,
+                        staff.name
+                        , staff.age
+                        , staff.lastName
+                ))
+                .from(store)
+                .join(store.staffs, staff);
+
+
+        return pagingUtil.getPageImpl(pageable, query, StaffInfoVo.class);
     }
 }

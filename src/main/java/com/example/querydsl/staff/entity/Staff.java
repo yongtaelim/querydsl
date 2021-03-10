@@ -20,16 +20,16 @@ import javax.persistence.*;
 public class Staff {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
     private Integer age;
     private String lastName;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_staff_store_id"))
-    private Store store;
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_staff_store_id"))
+//    private Store store;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "house_id", foreignKey = @ForeignKey(name = "fk_staff_house_id"))
@@ -39,12 +39,11 @@ public class Staff {
     private Bag bag;
 
     @Builder
-    public Staff(Long id, String name, Integer age, String lastName, Store store, House house, Bag bag) {
+    public Staff(Long id, String name, Integer age, String lastName, House house, Bag bag) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.lastName = lastName;
-        this.store = store;
         this.house = house;
         this.bag = bag;
     }
