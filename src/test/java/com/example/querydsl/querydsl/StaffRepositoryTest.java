@@ -1,39 +1,43 @@
 package com.example.querydsl.querydsl;
 
-import com.example.querydsl.basic.BasicTest;
+import com.example.querydsl.order.OrderSort;
+import com.example.querydsl.order.PageOrderVo;
+import com.example.querydsl.order.SortVo;
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.repository.StaffRepository;
 import com.example.querydsl.staff.vo.StaffEtcVo;
-import com.example.querydsl.staff.vo.StaffInfoVo;
 import com.example.querydsl.staff.vo.StaffVo;
-import com.example.querydsl.store.entity.Store;
-import com.example.querydsl.store.repository.StoreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ActiveProfiles("h2")
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-class StaffRepositoryTest extends BasicTest {
+class StaffRepositoryTest {
 
-    private final StoreRepository storeRepository;
     private final StaffRepository staffRepository;
 
-    public StaffRepositoryTest(StoreRepository storeRepository, StaffRepository staffRepository) {
-        this.storeRepository = storeRepository;
+    public StaffRepositoryTest(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
     }
 
@@ -50,13 +54,13 @@ class StaffRepositoryTest extends BasicTest {
             );
         }
 
-        Store store = Store.builder()
-                .address("강남역 근처")
-                .name("대박사업장")
-                .staffs(staffs)
-                .build();
+//        Store store = Store.builder()
+//                .address("강남역 근처")
+//                .name("대박사업장")
+//                .staffs(staffs)
+//                .build();
 
-        storeRepository.save(store);
+        staffRepository.saveAll(staffs);
     }
 
     @Test
@@ -218,16 +222,38 @@ class StaffRepositoryTest extends BasicTest {
     @DisplayName("querydsl paging, order 테스트")
     void findAllDynamicOrder_test() {
         //given
-        Pageable pageable = PageRequest.of(0, 10);
+        PageOrderVo pageOrderVo = generate_findAllDynamicOrder_testData();
 
         //when
-        PageImpl<StaffInfoVo> storeInfoVo = staffRepository.findAllDynamicOrder(pageable);
+        PageImpl<Staff> pageImplStaff = staffRepository.findAllDynamicOrder(pageOrderVo);
+
+        System.out.println(pageImplStaff.getContent().toString());
 
         //then
         assertAll(
-                () -> assertThat(storeInfoVo.getTotalPages()).isEqualTo(0),
-                () -> assertThat(storeInfoVo.getNumber()).isEqualTo(0),
-                () -> assertThat(storeInfoVo.getContent()).hasSize(10)
+                () -> assertThat(pageImplStaff.getTotalPages()).isEqualTo(1),
+                () -> assertThat(pageImplStaff.getNumber()).isEqualTo(0),
+                () -> assertThat(pageImplStaff.getContent()).hasSize(10)
         );
+    }
+
+    private PageOrderVo generate_findAllDynamicOrder_testData() {
+        SortVo sortVo1 = new SortVo();
+        sortVo1.setKey("name");
+        sortVo1.setOrderSort(OrderSort.DESC);
+
+        SortVo sortVo2 = new SortVo();
+        sortVo2.setKey("lastName");
+        sortVo2.setOrderSort(OrderSort.DESC);
+
+        SortVo sortVo3 = new SortVo();
+        sortVo3.setKey("age");
+        sortVo3.setOrderSort(OrderSort.ASC);
+
+        PageOrderVo pageOrderVo = new PageOrderVo();
+        pageOrderVo.setPage(0);
+        pageOrderVo.setPageSize(10);
+        pageOrderVo.setSorts(Arrays.asList(sortVo1, sortVo2, sortVo3));
+        return pageOrderVo;
     }
 }

@@ -2,8 +2,8 @@ package com.example.querydsl.staff.repository;
 
 import com.example.querydsl.staff.entity.Staff;
 import com.example.querydsl.staff.vo.StaffEtcVo;
-import com.example.querydsl.staff.vo.StaffInfoVo;
 import com.example.querydsl.staff.vo.StaffVo;
+import com.example.querydsl.order.PageOrderVo;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -26,5 +26,5 @@ public interface StaffQueryRepository {
 
     List<Staff> findByCoveringIndex(String name);
 
-    PageImpl<StaffInfoVo> findAllDynamicOrder(Pageable pageable);
+    PageImpl<Staff> findAllDynamicOrder(PageOrderVo pageOrderVo);
 }

@@ -1,9 +1,11 @@
 package com.example.querydsl.staff.repository;
 
+import com.example.querydsl.order.OrderPage;
 import com.example.querydsl.staff.entity.Staff;
+import com.example.querydsl.staff.order.StaffOrderPage;
 import com.example.querydsl.staff.vo.StaffEtcVo;
-import com.example.querydsl.staff.vo.StaffInfoVo;
 import com.example.querydsl.staff.vo.StaffVo;
+import com.example.querydsl.order.PageOrderVo;
 import com.example.querydsl.util.PagingUtil;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import static com.example.querydsl.store.entity.QStore.store;
 @RequiredArgsConstructor
 public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     private final JPAQueryFactory queryFactory;
+    private final EntityManager entityManager;
     private final PagingUtil pagingUtil;
 
     @Override
@@ -143,17 +147,11 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     }
 
     @Override
-    public PageImpl<StaffInfoVo> findAllDynamicOrder(Pageable pageable) {
-        JPAQuery<StaffInfoVo> query = queryFactory
-                .select(Projections.fields(StaffInfoVo.class,
-                        staff.name
-                        , staff.age
-                        , staff.lastName
-                ))
-                .from(store)
-                .join(store.staffs, staff);
+    public PageImpl<Staff> findAllDynamicOrder(PageOrderVo pageOrderVo) {
+        JPAQuery<Staff> query = queryFactory
+                .selectFrom(staff);
 
-
-        return pagingUtil.getPageImpl(pageable, query, StaffInfoVo.class);
+        OrderPage orderPage = new StaffOrderPage(entityManager, Staff.class);
+        return orderPage.getPageImpl(query, pageOrderVo);
     }
 }
