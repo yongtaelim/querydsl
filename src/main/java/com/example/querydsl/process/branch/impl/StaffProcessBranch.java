@@ -18,7 +18,7 @@ public class StaffProcessBranch implements ProcessBranch {
     @Override
     public String process() {
         Optional<Staff> staffOptional = staffRepository.findById(1L);
-        if(!staffOptional.isPresent()) {
+        if (!staffOptional.isPresent()) {
             return "값이 없다";
         }
         Staff staff = staffOptional.get();

@@ -29,7 +29,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-//    @ColumnTransformer(read = "CreatePrefix(account_number)", write = "CreatePrefix(?)")
+    //    @ColumnTransformer(read = "CreatePrefix(account_number)", write = "CreatePrefix(?)")
     private String name;
     private String address;
 

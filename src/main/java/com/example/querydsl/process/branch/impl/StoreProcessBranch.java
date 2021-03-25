@@ -19,7 +19,7 @@ public class StoreProcessBranch implements ProcessBranch {
     @Override
     public String process() {
         Optional<Store> storeOptional = storeRepository.findById(1L);
-        if(!storeOptional.isPresent()) {
+        if (!storeOptional.isPresent()) {
             return "값이 없다";
         }
         Store store = storeOptional.get();

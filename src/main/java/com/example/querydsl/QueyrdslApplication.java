@@ -6,13 +6,13 @@ import org.springframework.util.StringUtils;
 
 @SpringBootApplication
 public class QueyrdslApplication {
-	public static void main(String[] args) {
-		setProfile();
-		SpringApplication.run(QueyrdslApplication.class, args);
-	}
+    public static void main(String[] args) {
+        setProfile();
+        SpringApplication.run(QueyrdslApplication.class, args);
+    }
 
-	private static void setProfile() {
-		final String property = System.getProperty("spring.profiles.active");
-		System.setProperty("spring.profiles.active", StringUtils.isEmpty(property) ? "h2" : property);
-	}
+    private static void setProfile() {
+        final String property = System.getProperty("spring.profiles.active");
+        System.setProperty("spring.profiles.active", StringUtils.isEmpty(property) ? "h2" : property);
+    }
 }

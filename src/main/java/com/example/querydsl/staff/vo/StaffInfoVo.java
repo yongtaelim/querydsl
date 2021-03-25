@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter @Setter
+@Getter
+@Setter
 public class StaffInfoVo {
     private String name;
     private Integer age;

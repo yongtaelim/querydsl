@@ -27,16 +27,16 @@ public class ProcessService {
 
 
     public String if문_탈출못했네(String branch) {
-        if(STORE_BRANCH.equals(branch)) {
+        if (STORE_BRANCH.equals(branch)) {
             Optional<Store> storeOptional = storeRepository.findById(1L);
-            if(!storeOptional.isPresent()) {
+            if (!storeOptional.isPresent()) {
                 return "값이 없다";
             }
             Store store = storeOptional.get();
             return store.getName();
-        } else if(STAFF_BRANCH.equals(branch)) {
+        } else if (STAFF_BRANCH.equals(branch)) {
             Optional<Staff> staffOptional = staffRepository.findById(1L);
-            if(!staffOptional.isPresent()) {
+            if (!staffOptional.isPresent()) {
                 return "값이 없다";
             }
             Staff staff = staffOptional.get();

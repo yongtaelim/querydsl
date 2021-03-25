@@ -46,11 +46,11 @@ class StaffRepositoryTest {
         List<Staff> staffs = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             staffs.add(
-                Staff.builder()
-                        .name("yong" + i)
-                        .age(i)
-                        .lastName("lim" + i)
-                        .build()
+                    Staff.builder()
+                            .name("yong" + i)
+                            .age(i)
+                            .lastName("lim" + i)
+                            .build()
             );
         }
 

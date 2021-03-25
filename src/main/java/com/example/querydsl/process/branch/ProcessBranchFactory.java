@@ -19,9 +19,9 @@ public class ProcessBranchFactory {
 
     public ProcessBranch getProcessBranch(String branch) {
         ProcessBranch processBranch = null;
-        if(STORE_BRANCH.equals(branch)) {
+        if (STORE_BRANCH.equals(branch)) {
             processBranch = storeProcessBranch;
-        } else if(STAFF_BRANCH.equals(branch)) {
+        } else if (STAFF_BRANCH.equals(branch)) {
             processBranch = staffProcessBranch;
         }
         return processBranch;

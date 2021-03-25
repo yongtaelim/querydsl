@@ -42,8 +42,8 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     public StaffVo search(Long id) {
         return queryFactory
                 .select(Projections.fields(StaffVo.class,
-                    staff.id,
-                    staff.name
+                        staff.id,
+                        staff.name
                 ))
                 .from(staff)
                 .where(staff.id.eq(id))
@@ -77,9 +77,9 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
                 .select(Projections.fields(StaffEtcVo.class,
                         staff,
                         store.address
-                        ))
+                ))
                 .from(staff)
-                    .join(store.staffs)
+                .join(store.staffs)
                 .where(staff.name.eq(name))
                 .fetchFirst();
     }
@@ -88,7 +88,7 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
     public Staff dynamicQuery(String name) {
         return queryFactory
                 .selectFrom(staff)
-                    .join(store).on(eqName(name))
+                .join(store).on(eqName(name))
                 .where(eqName(name))
                 .fetchOne();
     }

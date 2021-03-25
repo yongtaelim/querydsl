@@ -27,7 +27,7 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
     /**
      * Creates a new {@link QuerydslRepositorySupport} instance for the given domain type.
      *
-     * @param domainClass must not be {@literal null}.
+     * @param domainClass   must not be {@literal null}.
      * @param entityManager
      */
     public StoreRepositorySupport(JPAQueryFactory jpaQueryFactory, EntityManager entityManager) {
@@ -42,7 +42,7 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
                         store.id
                         , Expressions.stringTemplate("createPrefix({0})", store.name).as("name")
                         , store.address
-                        ))
+                ))
                 .from(store)
                 .where(store.name.eq(name))
                 .limit(1L)
@@ -76,6 +76,7 @@ public class StoreRepositorySupport extends QuerydslRepositorySupport {
 
     /**
      * Entity 관계 매핑 되어 있지 않을 경우
+     *
      * @param name
      * @return
      */

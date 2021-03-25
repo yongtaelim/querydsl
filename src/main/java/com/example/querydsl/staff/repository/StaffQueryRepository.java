@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface StaffQueryRepository {
     List<Staff> searchAll();
+
     StaffVo search(Long id);
+
     Staff findStaffById(Long id);
 
     PageImpl<StaffVo> findStaffsByNamePaging(String name, Pageable pageable);

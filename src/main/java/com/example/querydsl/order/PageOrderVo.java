@@ -7,7 +7,8 @@ import lombok.ToString;
 import java.util.List;
 
 @ToString
-@Getter @Setter
+@Getter
+@Setter
 public class PageOrderVo {
     private Integer page;
     private Integer pageSize;

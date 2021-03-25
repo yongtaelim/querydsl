@@ -132,7 +132,7 @@ public class JpaTest {
                 .age(staffAge2)
                 .build();
 
-        staffRepository.saveAll( Arrays.asList(staff1, staff2));
+        staffRepository.saveAll(Arrays.asList(staff1, staff2));
 
         Store store = Store.builder()
                 .id(storeId)

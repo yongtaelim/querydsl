@@ -3,7 +3,7 @@ create table store
 (
     id      bigint auto_increment
         primary key,
-    name    varchar(20)  null,
+    name    varchar(20) null,
     address varchar(100) null
 );
 
@@ -12,8 +12,8 @@ create table staff
 (
     id       bigint auto_increment
         primary key,
-    store_id bigint      null,
+    store_id bigint null,
     name     varchar(10) null,
-    age      int         null
+    age      int null
 );
 
