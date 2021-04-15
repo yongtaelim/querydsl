@@ -9,6 +9,11 @@ public class QueyrdslApplication {
     public static void main(String[] args) {
         setProfile();
         SpringApplication.run(QueyrdslApplication.class, args);
+
+        for (int i = 0; i < 5; i++) {
+
+        }
+
     }
 
     private static void setProfile() {

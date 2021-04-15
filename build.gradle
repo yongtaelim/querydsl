@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 //	 'p6spy:p6spy'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
